@@ -3,22 +3,26 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-// Use DATABASE_URL if available (Railway sets this automatically), otherwise fallback to individual env vars
-const connectionString =
-  process.env.DATABASE_URL ||
-  `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
+let sequelize
 
-export const sequelize = new Sequelize(connectionString, {
-  dialect: "postgres",
-  logging: process.env.NODE_ENV === "development" ? console.log : false,
-  dialectOptions:
-    process.env.NODE_ENV === "production"
-      ? { ssl: { require: true, rejectUnauthorized: false } }
-      : {},
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000,
-  },
-})
+if (process.env.DATABASE_URL) {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: "postgres",
+    logging: process.env.NODE_ENV === "development" ? console.log : false,
+    dialectOptions: {
+      ssl: { require: true, rejectUnauthorized: false },
+    },
+  })
+} else {
+  sequelize = new Sequelize({
+    dialect: "postgres",
+    host: process.env.DB_HOST || "localhost",
+    port: Number(process.env.DB_PORT) || 5432,
+    database: process.env.DB_NAME || "coworking_reservations",
+    username: process.env.DB_USER || "postgres",
+    password: process.env.DB_PASSWORD || "password",
+    logging: process.env.NODE_ENV === "development" ? console.log : false,
+  })
+}
+
+export { sequelize }
