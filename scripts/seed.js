@@ -6,8 +6,6 @@ dotenv.config()
 const seedData = async () => {
   try {
     console.log("🌱 Sembrando datos de prueba...")
-
-    // Crear espacios de ejemplo
     const spaces = await Space.bulkCreate([
       {
         nombre: "Sala de Reuniones A",
