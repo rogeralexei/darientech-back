@@ -313,5 +313,3 @@ docker-compose -f docker-compose.prod.yml up -d
 **Desarrollado para**: Darien Technology Hub  
 
 ### Este Readme se genero con IA! :)
-**Versión**: 1.0.0  
-**Fecha**: Diciembre 2024
