@@ -31,54 +31,6 @@ API REST desarrollada en Node.js para la gestión de reservas en un espacio de c
 - **Containerización**: Docker, Docker Compose
 - **Seguridad**: Helmet, CORS, Rate Limiting
 
-## Estructura del Proyecto
-
-\`\`\`
-src/
-├── config/
-│   └── database.js          # Configuración de base de datos
-├── controllers/
-│   ├── spacesController.js  # Controlador de espacios
-│   ├── reservationsController.js # Controlador de reservas
-│   └── businessRulesController.js # Controlador de reglas
-├── middleware/
-│   ├── auth.js              # Autenticación API key
-│   ├── errorHandler.js      # Manejo de errores
-│   ├── validation.js        # Validaciones generales
-│   ├── rateLimiter.js       # Límite de velocidad
-│   └── logger.js            # Logging de requests
-├── models/
-│   ├── Space.js             # Modelo de Espacio
-│   ├── Reservation.js       # Modelo de Reserva
-│   └── index.js             # Exportación de modelos
-├── routes/
-│   ├── spaces.js            # Rutas de espacios
-│   ├── reservations.js      # Rutas de reservas
-│   └── businessRules.js     # Rutas de reglas
-├── services/
-│   ├── businessRules.js     # Lógica de reglas de negocio
-│   ├── spaceService.js      # Servicios de espacios
-│   └── reservationService.js # Servicios de reservas
-├── utils/
-│   ├── apiResponse.js       # Respuestas estandarizadas
-│   └── asyncHandler.js      # Manejo de async/await
-├── validators/
-│   ├── spaceValidator.js    # Validaciones de espacios
-│   └── reservationValidator.js # Validaciones de reservas
-└── server.js                # Punto de entrada
-
-tests/
-├── unit/                    # Pruebas unitarias
-├── integration/             # Pruebas de integración
-├── e2e/                     # Pruebas end-to-end
-├── performance/             # Pruebas de rendimiento
-└── setup.js                 # Configuración de pruebas
-
-scripts/
-├── 01_create_database.sql   # Script de creación de BD
-└── 02_seed_data.sql         # Datos de prueba
-\`\`\`
-
 ## Instalación y Configuración
 
 ### Prerrequisitos
@@ -90,46 +42,47 @@ scripts/
 ### Instalación Local
 
 1. **Clonar el repositorio**
-\`\`\`bash
+``bash
 git clone <repository-url>
 cd coworking-reservations-backend
-\`\`\`
+``
 
-2. **Instalar dependencias**
-\`\`\`bash
+3. **Instalar dependencias**
+``bash
 npm install
-\`\`\`
+``
 
-3. **Configurar variables de entorno**
-\`\`\`bash
+5. **Configurar variables de entorno**
+   
+```
 cp .env.example .env
 # Editar .env con tus configuraciones
-\`\`\`
+```
 
 4. **Configurar base de datos**
-\`\`\`bash
+```
 # Crear base de datos PostgreSQL
 createdb coworking_reservations
 
 # Ejecutar scripts de inicialización
 psql -d coworking_reservations -f scripts/01_create_database.sql
-\`\`\`
+```
 
 5. **Ejecutar la aplicación**
-\`\`\`bash
+```
 # Desarrollo
 npm run dev
 
 # Producción
 npm start
-\`\`\`
+```
 
 ### Instalación con Docker
 
 1. **Ejecutar con docker-compose**
-\`\`\`bash
+```
 docker-compose up -d
-\`\`\`
+```
 
 Esto iniciará:
 - API en puerto 3000
@@ -137,7 +90,7 @@ Esto iniciará:
 
 ## Variables de Entorno
 
-\`\`\`env
+```
 # Base de datos
 DB_HOST=localhost
 DB_PORT=5432
@@ -154,7 +107,7 @@ API_KEY=coworking-api-key-2024
 
 # Reglas de negocio
 MAX_RESERVATIONS_PER_WEEK=3
-\`\`\`
+```
 
 ## Uso de la API
 
@@ -162,9 +115,9 @@ MAX_RESERVATIONS_PER_WEEK=3
 
 Todas las rutas de la API requieren el header `x-api-key`:
 
-\`\`\`bash
+```
 curl -H "x-api-key: coworking-api-key-2024" http://localhost:3000/api/spaces
-\`\`\`
+```
 
 ### Endpoints Principales
 
@@ -197,7 +150,7 @@ curl -H "x-api-key: coworking-api-key-2024" http://localhost:3000/api/spaces
 
 #### Crear un Espacio
 
-\`\`\`bash
+```
 curl -X POST http://localhost:3000/api/spaces \
   -H "Content-Type: application/json" \
   -H "x-api-key: coworking-api-key-2024" \
@@ -207,11 +160,11 @@ curl -X POST http://localhost:3000/api/spaces \
     "capacidad": 8,
     "descripcion": "Sala equipada con proyector"
   }'
-\`\`\`
+```
 
 #### Crear una Reserva
 
-\`\`\`bash
+```
 curl -X POST http://localhost:3000/api/reservations \
   -H "Content-Type: application/json" \
   -H "x-api-key: coworking-api-key-2024" \
@@ -222,26 +175,26 @@ curl -X POST http://localhost:3000/api/reservations \
     "horaInicio": "09:00",
     "horaFin": "11:00"
   }'
-\`\`\`
+```
 
 #### Listar Reservas con Filtros
 
-\`\`\`bash
+```
 curl "http://localhost:3000/api/reservations?emailCliente=usuario@example.com&page=1&limit=10" \
   -H "x-api-key: coworking-api-key-2024"
-\`\`\`
+```
 
 ## Pruebas
 
 ### Ejecutar Todas las Pruebas
 
-\`\`\`bash
+```
 npm test
-\`\`\`
+```
 
 ### Tipos de Pruebas
 
-\`\`\`bash
+```
 # Pruebas unitarias
 npm run test:unit
 
@@ -256,17 +209,17 @@ npm run test:performance
 
 # Cobertura de código
 npm run test:coverage
-\`\`\`
+```
 
 ### Configuración de Pruebas
 
 Las pruebas utilizan una base de datos separada configurada en `.env.test`:
 
-\`\`\`env
+```
 DB_NAME=coworking_reservations_test
 NODE_ENV=test
 API_KEY=test-api-key-2024
-\`\`\`
+```
 
 ## Reglas de Negocio
 
@@ -329,51 +282,36 @@ API_KEY=test-api-key-2024
 ### Producción
 
 1. **Variables de entorno**:
-\`\`\`env
+```
 NODE_ENV=production
 DB_HOST=your-db-host
 API_KEY=your-secure-api-key
-\`\`\`
+```
 
 2. **Base de datos**:
-\`\`\`bash
+```
 # Ejecutar migraciones en producción
 npm run migrate:prod
-\`\`\`
+```
 
 3. **Iniciar aplicación**:
-\`\`\`bash
+```
 npm start
-\`\`\`
+```
 
 ### Docker
 
-\`\`\`bash
+```
 # Construir imagen
 docker build -t coworking-api .
 
 # Ejecutar con docker-compose
 docker-compose -f docker-compose.prod.yml up -d
-\`\`\`
-
-## Contribución
-
-1. Fork el proyecto
-2. Crear rama feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit cambios (`git commit -am 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Crear Pull Request
-
-## Licencia
-
-MIT License - ver archivo LICENSE para detalles.
-
-## Soporte
-
-Para soporte técnico o reportar bugs, crear un issue en el repositorio.
-
+```
 ---
 
-**Desarrollado por**: Darien Technology Hub  
+**Desarrollado para**: Darien Technology Hub  
+
+### Este Readme se genero con IA! :)
 **Versión**: 1.0.0  
 **Fecha**: Diciembre 2024
